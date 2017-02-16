@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+		*{margin: 0;padding: 0;}
+		.on{color: red;}
+		.box{position: relative;}
+		.box div{position: absolute;top: 0;left: 0;opacity: 0;transition: .5s;}
+	</style>
+</head>
+<body>
+<div class="nav">
+<span>1</span>
+<span>2</span>
+<span>3</span>
+</div>
+<div class="box">
+	<div>111111111111111</div>
+	<div>222222222222222</div>
+	<div>333333333333333</div>
+</div>
+	<script>
+		class Tab{
+			constructor(opts){
+				this.opts=opts;
+				this.navs=document.querySelector(this.opts.nav).getElementsByTagName('span');
+				this.boxs=document.querySelector(this.opts.box).getElementsByTagName('div');
+				this._init();
+			}
+			_init(){
+				this.navs[this.opts.index].className='on';
+				this.boxs[this.opts.index].style.opacity=1;
+				this._event();
+			}
+			_event(){
+				for (let i = 0; i < this.navs.length; i++) {
+					this.navs[i].addEventListener(this.opts.type,()=>{
+						Array.from(this.boxs).map((item)=>{item.style.opacity=0;});
+						this.boxs[i].style.opacity=1;
+						Array.from(this.navs).map((item)=>{item.className='';});
+						this.navs[i].className='on';
+					},false)
+				}
+			}
+		}
+		// let tab1=new Tab({nav:'.nav',box:'.box',index:1,type:'mouseover'})
+		class Tab2 extends Tab{
+			constructor(opts,fn){
+				super(opts);
+				this.fn=fn;
+				this.fn();
+			}
+			_alert(){
+				this.fn();
+			}
+
+		}
+		let tab2=new Tab2({nav:'.nav',box:'.box',index:1,type:'mouseover'},function(){alert(2);});
+	</script>
+</body>
+</html>

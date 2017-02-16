@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+		*{margin: 0;padding: 0;}
+		header{height: 400px;}
+		ul{list-style: none;}
+		.box{height: 600px;border: 1px solid red;}
+		.nav{background: green;position: fixed;top: 0;left: 0;}
+		.on{background: pink;}
+	</style>
+</head>
+<body>
+	<header>2</header>
+	<section class="box">1</section>
+	<section class="box">2</section>
+	<section class="box">3</section>
+	<section class="box">4</section>
+	<div class="nav">
+		<ul>
+			<li class="asideNav-item on">1</li>
+			<li class="asideNav-item">2</li>
+			<li class="asideNav-item">3</li>
+			<li class="asideNav-item">4</li>
+		</ul>
+	</div>
+	<script>
+		class asideNav{
+			constructor(opts){
+				this.opts=opts;
+				this.boxs=document.querySelectorAll(this.opts.boxCls);
+				this.navs=document.querySelectorAll(this.opts.navCls);
+				this._init();
+			}
+			_init(){
+				let arrTop=Array.from(this.boxs).map((item)=>{
+					return item.offsetTop-400;
+				})
+
+				this._event(arrTop);
+				
+			}
+			_event(arrTop){
+				let that=this;
+				// console.log(arrTop);
+				window.onscroll=function(){
+					let scrollTop=document.body.scrollTop||document.documentElement.scrollTop;
+					console.log(scrollTop);
+					arrTop.forEach((item,index)=>{
+						if(scrollTop>item){
+							Array.from(that.navs).forEach((item)=>item.classList.remove(that.opts.navSelCls));
+							that.navs[index].classList.add(that.opts.navSelCls);
+						}
+					})
+				}
+			}
+		}
+
+		let aside=new asideNav({
+			boxCls:'.box',
+			navCls:'.asideNav-item',
+			navSelCls:'on'
+		})
+
+	</script>
+</body>
+</html>
